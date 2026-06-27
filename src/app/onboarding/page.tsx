@@ -18,7 +18,7 @@ export default async function OnboardingPage() {
   if (!profile) redirect("/login");
 
   const hasRealUsername = !/^user_[0-9a-f]{8}$/.test(profile.username);
-  if (hasRealUsername) redirect("/library");
+  if (hasRealUsername) redirect("/");
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center p-6">

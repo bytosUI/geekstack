@@ -45,7 +45,7 @@ export async function updateRating(movieId: number, rating: number | null) {
 
   revalidatePath(`/movie/${movieId}`);
   revalidatePath("/library");
-  revalidatePath("/profile");
+  revalidatePath("/");
   return { ok: true };
 }
 
@@ -62,6 +62,6 @@ export async function removeFromLibrary(movieId: number) {
 
   if (error) return { error: error.message };
   revalidatePath("/library");
-  revalidatePath("/profile");
+  revalidatePath("/");
   redirect("/library");
 }

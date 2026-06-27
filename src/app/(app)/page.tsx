@@ -99,25 +99,16 @@ export default async function HomeV3({
 
   return (
     <div className="flex flex-col gap-8">
-      {/* Bandeau preview */}
-      <Card className="border-primary/40 bg-primary/5">
-        <CardContent className="flex items-center justify-between gap-4 py-3 flex-wrap">
-          <span className="text-sm">
-            <Badge variant="default" className="mr-2">v3</Badge>
-            {isDemo
-              ? "Mode démo — bascule + recap forcés (pour testeurs)"
-              : "Preview multi-média — données jeux/anime/séries simulées"}
-          </span>
-          <div className="flex gap-2">
-            <Button asChild variant="ghost" size="sm">
-              <Link href="/v2">← v2</Link>
-            </Button>
-            <Button asChild variant="ghost" size="sm">
-              <Link href="/library">v1 →</Link>
-            </Button>
-          </div>
-        </CardContent>
-      </Card>
+      {isDemo && (
+        <Card className="border-primary/40 bg-primary/5">
+          <CardContent className="flex items-center justify-between gap-4 py-3 flex-wrap">
+            <span className="text-sm">
+              <Badge variant="default" className="mr-2">démo</Badge>
+              Mode démo — bascule + recap + traits forcés (pour testeurs)
+            </span>
+          </CardContent>
+        </Card>
+      )}
 
       {/* Persona shift — cadeau de rétention */}
       {shift?.hasShifted && (
@@ -150,6 +141,7 @@ export default async function HomeV3({
         <Link
           href={`/recaps/${recap.period}${isDemo ? "?demo=1" : ""}`}
           className="block group"
+          prefetch={false}
         >
           <Card className="transition group-hover:border-primary">
             <CardContent className="flex items-center gap-4 py-4">
@@ -294,7 +286,7 @@ export default async function HomeV3({
       {/* Tracking subtil */}
       <section className="flex flex-col gap-2">
         <p className="text-xs text-muted-foreground italic">
-          Note : seuls les films sont réellement branchés sur ta bibliothèque. Les autres médias arriveront dans les prochaines itérations (IGDB pour jeux, AniList pour anime, TMDB Séries). Cette page sert à valider la direction visuelle.
+          Note : seuls les films sont actuellement branchés. Jeux, anime et séries arriveront dans les prochaines itérations (IGDB, AniList, TMDB Séries).
         </p>
         <Link
           href="/library"

@@ -10,7 +10,7 @@ import {
   FAKE_GAMES_DNA,
   FAKE_MEDIA_WEIGHTS,
   FAKE_SERIES_DNA,
-} from "@/app/(app)/v3/fake-data";
+} from "@/app/(app)/fake-data";
 import type { SupabaseClient } from "@supabase/supabase-js";
 
 const SHIFT_WINDOW_DAYS = 30;

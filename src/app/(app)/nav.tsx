@@ -12,7 +12,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Library, Search, User, LogOut, Sparkles } from "lucide-react";
+import { Library, Search, LogOut, Sparkles } from "lucide-react";
 
 interface NavProfile {
   id: string;
@@ -41,15 +41,14 @@ export function AppNav({ profile }: { profile: NavProfile }) {
   return (
     <header className="border-b sticky top-0 z-10 bg-background/80 backdrop-blur">
       <div className="container mx-auto max-w-5xl flex items-center justify-between p-3 md:p-4">
-        <Link href="/library" className="font-bold text-lg tracking-tight">
+        <Link href="/" className="font-bold text-lg tracking-tight flex items-center gap-1.5">
+          <Sparkles className="size-4 text-primary" />
           GeekStack
         </Link>
 
         <nav className="flex items-center gap-1">
-          <NavLink href="/v3" active={pathname === "/v3"} icon={<Sparkles className="size-4" />} label="Univers" />
           <NavLink href="/search" active={pathname.startsWith("/search")} icon={<Search className="size-4" />} label="Rechercher" />
           <NavLink href="/library" active={pathname.startsWith("/library")} icon={<Library className="size-4" />} label="Bibliothèque" />
-          <NavLink href="/profile" active={pathname.startsWith("/profile")} icon={<User className="size-4" />} label="Profil" />
 
           <DropdownMenu>
             <DropdownMenuTrigger className="ml-2 outline-none">

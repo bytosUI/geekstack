@@ -19,3 +19,7 @@ export async function logEvent(
 
   if (error) console.warn("[analytics] failed to log event", type, error.message);
 }
+
+export async function trackShareClick() {
+  await logEvent("dna_share_clicked");
+}

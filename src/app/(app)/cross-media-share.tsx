@@ -4,7 +4,7 @@ import { useTransition } from "react";
 import { Button } from "@/components/ui/button";
 import { Loader2, Share2 } from "lucide-react";
 import { toast } from "sonner";
-import { trackShareClick } from "../profile/actions";
+import { trackShareClick } from "@/lib/analytics/log-event";
 import type { MacroGenre } from "@/lib/macro-genres";
 
 const COLORS = ["#092DE6", "#FF5B60", "#FF7A00", "#1F2937", "#4D6BFF", "#D93A3F"];

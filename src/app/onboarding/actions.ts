@@ -34,5 +34,5 @@ export async function setUsername(formData: FormData) {
     return { error: error.message };
   }
 
-  redirect("/library");
+  redirect("/");
 }

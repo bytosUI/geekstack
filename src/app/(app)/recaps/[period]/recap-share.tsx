@@ -4,7 +4,7 @@ import { useTransition } from "react";
 import { Button } from "@/components/ui/button";
 import { Loader2, Share2 } from "lucide-react";
 import { toast } from "sonner";
-import { trackShareClick } from "../../profile/actions";
+import { trackShareClick } from "@/lib/analytics/log-event";
 import type { MonthlyRecap } from "@/lib/recaps";
 import type { MacroGenre } from "@/lib/macro-genres";
 

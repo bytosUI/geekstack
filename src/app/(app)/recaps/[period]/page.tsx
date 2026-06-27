@@ -57,7 +57,7 @@ export default async function RecapPage({
   return (
     <div className="flex flex-col gap-6">
       <Button variant="ghost" size="sm" asChild className="self-start">
-        <Link href={isDemo ? "/v3?demo=1" : "/v3"}>
+        <Link href={isDemo ? "/?demo=1" : "/"}>
           <ArrowLeft className="size-4" /> Retour
         </Link>
       </Button>
