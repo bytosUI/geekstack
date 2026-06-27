@@ -96,14 +96,18 @@ interface MacroPersona {
 }
 
 const PERSONAS: MacroPersona[] = [
-  { label: "IMAGINAIRE",   tagline: "tu rêves d'autres mondes",          signature: ["Sci-Fi", "Fantasy"] },
-  { label: "RÉALISTE",     tagline: "tu cherches le vrai dans la fiction", signature: ["Drame", "Documentaire"] },
+  { label: "IMAGINAIRE",   tagline: "tu rêves d'autres mondes",                signature: ["Sci-Fi", "Fantasy"] },
+  { label: "RÉALISTE",     tagline: "tu cherches le vrai dans la fiction",      signature: ["Drame", "Documentaire"] },
   { label: "AVENTURIER",   tagline: "tu veux de l'évasion et du grand spectacle", signature: ["Action", "Fantasy"] },
-  { label: "SENSORIEL",    tagline: "tu aimes que ça te remue",          signature: ["Horror", "Thriller"] },
-  { label: "INTELLECTUEL", tagline: "tu poursuis le sens et les énigmes", signature: ["Mystère", "Drame", "Documentaire"] },
-  { label: "MÉLANCOLIQUE", tagline: "tu cherches les émotions douces",   signature: ["Drame", "Romance"] },
-  { label: "FESTIF",       tagline: "tu veux que ça respire la joie",    signature: ["Comédie", "Romance"] },
-  { label: "ÉCLECTIQUE",   tagline: "tu refuses de te ranger dans une case", signature: [] },
+  { label: "SENSORIEL",    tagline: "tu aimes que ça te remue",                  signature: ["Horror", "Thriller"] },
+  { label: "INTELLECTUEL", tagline: "tu poursuis le sens et les énigmes",       signature: ["Mystère", "Drame", "Documentaire"] },
+  { label: "MÉLANCOLIQUE", tagline: "tu cherches les émotions douces",          signature: ["Drame", "Romance"] },
+  { label: "FESTIF",       tagline: "tu veux que ça respire la joie",           signature: ["Comédie", "Romance"] },
+  { label: "ÉSOTÉRIQUE",   tagline: "tu es fasciné.e par ce qui se cache derrière le visible", signature: ["Horror", "Fantasy", "Mystère"] },
+  { label: "COMBATTANT",   tagline: "tu cherches l'arène, la tension, l'adversaire", signature: ["Action", "Thriller"] },
+  { label: "SAVANT",       tagline: "tu collectionnes les vérités du monde",    signature: ["Documentaire", "Mystère"] },
+  { label: "ARCHITECTE",   tagline: "tu aimes les récits qui se déplient comme un puzzle", signature: ["Drame", "Thriller", "Mystère"] },
+  { label: "ÉCLECTIQUE",   tagline: "tu refuses de te ranger dans une case",    signature: [] },
 ];
 
 export function derivePersona(crossDna: { macro: MacroGenre; percentage: number }[]): MacroPersona {

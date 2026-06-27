@@ -1,6 +1,7 @@
 import { derivePersona, type MacroGenre } from "@/lib/macro-genres";
 import type { MonthlyRecap, PersonaShift } from "@/lib/recaps";
 import type { Trait } from "@/lib/traits";
+import type { Anniversary } from "@/lib/anniversaries";
 
 const DEMO_TOP_MACRO: { macro: MacroGenre; percentage: number }[] = [
   { macro: "Sci-Fi",  percentage: 36 },
@@ -32,6 +33,16 @@ export const DEMO_SHIFT: PersonaShift = {
   previousLabel: "RÉALISTE",
   currentLabel: "IMAGINAIRE",
   windowCount: 6,
+};
+
+export const DEMO_ANNIVERSARY: Anniversary = {
+  movieId: 27205,
+  title: "Inception",
+  posterPath: "/8IB2e4r4oVhHnANbnm7O3Tj6tF8.jpg",
+  rating: 9,
+  windowKey: "1y",
+  windowLabel: "Il y a 1 an",
+  ratedAt: new Date(Date.now() - 365 * 24 * 60 * 60 * 1000).toISOString(),
 };
 
 export const DEMO_TRAITS: Trait[] = [

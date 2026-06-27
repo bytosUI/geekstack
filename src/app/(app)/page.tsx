@@ -21,7 +21,10 @@ import {
   detectPersonaShift,
   getLatestAvailableMonthlyRecap,
 } from "@/lib/recaps";
+import { detectAnniversary, type Anniversary } from "@/lib/anniversaries";
+import { pickCalmPrompt } from "@/lib/calm-state";
 import { buildTraitInput, computeTraits, type Trait } from "@/lib/traits";
+import { AnniversaryCard } from "./anniversary-card";
 import type { GenreDnaRow } from "@/types/database";
 
 const MACRO_COLORS: Record<MacroGenre, string> = {
@@ -55,6 +58,7 @@ export default async function HomeV3({
     { data: entriesForTraits },
     realShift,
     realRecap,
+    realAnniversary,
   ] = await Promise.all([
     supabase.from("profiles").select("username, display_name").eq("id", user.id).single(),
     supabase
@@ -69,11 +73,13 @@ export default async function HomeV3({
       .returns<{ rating: number | null; movie: { release_year: number | null; genres: string[] } | null }[]>(),
     isDemo ? Promise.resolve(null) : detectPersonaShift(supabase, user.id),
     isDemo ? Promise.resolve(null) : getLatestAvailableMonthlyRecap(supabase, user.id),
+    isDemo ? Promise.resolve(null) : detectAnniversary(supabase, user.id),
   ]);
 
   const demoModule = isDemo ? await import("@/lib/demo-data") : null;
   const shift = isDemo ? demoModule!.DEMO_SHIFT : realShift;
   const recap = isDemo ? demoModule!.DEMO_RECAP : realRecap;
+  const anniversary: Anniversary | null = isDemo ? demoModule!.DEMO_ANNIVERSARY : realAnniversary;
   const traits: Trait[] = isDemo
     ? demoModule!.DEMO_TRAITS
     : computeTraits(buildTraitInput(entriesForTraits ?? []));
@@ -132,6 +138,23 @@ export default async function HomeV3({
                 Basé sur tes {shift.windowCount} dernières notations.
               </p>
             </div>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Anniversaire de note */}
+      {anniversary && <AnniversaryCard anniversary={anniversary} />}
+
+      {/* État calme — citation contemplative quand rien d'autre n'a "tilté" */}
+      {!shift?.hasShifted && !recap && !anniversary && (
+        <Card className="border-dashed bg-muted/40">
+          <CardContent className="py-5">
+            <p className="text-xs uppercase tracking-wider text-muted-foreground font-medium mb-1.5">
+              💭 Pensée de la semaine
+            </p>
+            <p className="text-base leading-relaxed">
+              {pickCalmPrompt(persona.label)}
+            </p>
           </CardContent>
         </Card>
       )}
