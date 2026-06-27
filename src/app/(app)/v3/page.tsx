@@ -21,6 +21,7 @@ import {
   detectPersonaShift,
   getLatestAvailableMonthlyRecap,
 } from "@/lib/recaps";
+import { buildTraitInput, computeTraits, type Trait } from "@/lib/traits";
 import type { GenreDnaRow } from "@/types/database";
 
 const MACRO_COLORS: Record<MacroGenre, string> = {
@@ -51,6 +52,7 @@ export default async function HomeV3({
   const [
     { data: profile },
     { data: filmsRaw },
+    { data: entriesForTraits },
     realShift,
     realRecap,
   ] = await Promise.all([
@@ -60,13 +62,21 @@ export default async function HomeV3({
       .select("*")
       .eq("user_id", user.id)
       .returns<GenreDnaRow[]>(),
+    supabase
+      .from("library_entries")
+      .select("rating, movie:movies(release_year, genres)")
+      .eq("user_id", user.id)
+      .returns<{ rating: number | null; movie: { release_year: number | null; genres: string[] } | null }[]>(),
     isDemo ? Promise.resolve(null) : detectPersonaShift(supabase, user.id),
     isDemo ? Promise.resolve(null) : getLatestAvailableMonthlyRecap(supabase, user.id),
   ]);
 
-  const { DEMO_SHIFT, DEMO_RECAP } = isDemo ? await import("@/lib/demo-data") : { DEMO_SHIFT: null, DEMO_RECAP: null };
-  const shift = isDemo ? DEMO_SHIFT : realShift;
-  const recap = isDemo ? DEMO_RECAP : realRecap;
+  const demoModule = isDemo ? await import("@/lib/demo-data") : null;
+  const shift = isDemo ? demoModule!.DEMO_SHIFT : realShift;
+  const recap = isDemo ? demoModule!.DEMO_RECAP : realRecap;
+  const traits: Trait[] = isDemo
+    ? demoModule!.DEMO_TRAITS
+    : computeTraits(buildTraitInput(entriesForTraits ?? []));
 
   const filmsMacro = aggregateMacroDna(filmsRaw ?? []);
 
@@ -171,6 +181,20 @@ export default async function HomeV3({
           <p className="text-base md:text-lg text-muted-foreground">
             {topThree.map((r) => r.macro).join(" · ")}
           </p>
+          {traits.length > 0 && (
+            <div className="flex flex-wrap gap-1.5 mt-3">
+              {traits.map((t) => (
+                <span
+                  key={t.id}
+                  title={t.description}
+                  className="inline-flex items-center gap-1 rounded-full border bg-card px-2.5 py-1 text-xs font-medium"
+                >
+                  <span aria-hidden>{t.emoji}</span>
+                  {t.label}
+                </span>
+              ))}
+            </div>
+          )}
           <p className="text-sm text-muted-foreground italic mt-1">
             « {persona.tagline} »
           </p>
@@ -242,6 +266,30 @@ export default async function HomeV3({
           </CardContent>
         </Card>
       </section>
+
+      {/* Traits identitaires — détaillés */}
+      {traits.length > 0 && (
+        <section className="flex flex-col gap-3">
+          <h2 className="text-sm uppercase tracking-wider text-muted-foreground font-medium">
+            Tes traits identitaires
+          </h2>
+          <div className="grid sm:grid-cols-2 gap-3">
+            {traits.map((t) => (
+              <Card key={t.id}>
+                <CardContent className="flex items-start gap-3 py-4">
+                  <span aria-hidden className="text-2xl leading-none mt-0.5">{t.emoji}</span>
+                  <div className="flex-1">
+                    <p className="font-medium text-sm">{t.label}</p>
+                    <p className="text-xs text-muted-foreground leading-snug mt-0.5">
+                      {t.description}
+                    </p>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* Tracking subtil */}
       <section className="flex flex-col gap-2">

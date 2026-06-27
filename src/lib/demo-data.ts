@@ -1,5 +1,6 @@
 import { derivePersona, type MacroGenre } from "@/lib/macro-genres";
 import type { MonthlyRecap, PersonaShift } from "@/lib/recaps";
+import type { Trait } from "@/lib/traits";
 
 const DEMO_TOP_MACRO: { macro: MacroGenre; percentage: number }[] = [
   { macro: "Sci-Fi",  percentage: 36 },
@@ -32,3 +33,24 @@ export const DEMO_SHIFT: PersonaShift = {
   currentLabel: "IMAGINAIRE",
   windowCount: 6,
 };
+
+export const DEMO_TRAITS: Trait[] = [
+  {
+    id: "trans_generationnel",
+    emoji: "🕰️",
+    label: "Trans-générationnel",
+    description: "Tu as noté au moins un film de chaque décennie depuis 1960.",
+  },
+  {
+    id: "critique_severe",
+    emoji: "🎯",
+    label: "Critique sévère",
+    description: "Ta note moyenne est sous 6,5/10 — tes 10 sont rares et précieux.",
+  },
+  {
+    id: "curieux",
+    emoji: "🧭",
+    label: "Curieux",
+    description: "Tes notes ≥ 7 couvrent au moins 8 genres différents.",
+  },
+];
