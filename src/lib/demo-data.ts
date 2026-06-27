@@ -2,6 +2,7 @@ import { derivePersona, type MacroGenre } from "@/lib/macro-genres";
 import type { MonthlyRecap, PersonaShift } from "@/lib/recaps";
 import type { Trait } from "@/lib/traits";
 import type { Anniversary } from "@/lib/anniversaries";
+import type { SeasonalRecap } from "@/lib/seasonal-recaps";
 
 const DEMO_TOP_MACRO: { macro: MacroGenre; percentage: number }[] = [
   { macro: "Sci-Fi",  percentage: 36 },
@@ -33,6 +34,32 @@ export const DEMO_SHIFT: PersonaShift = {
   previousLabel: "RÉALISTE",
   currentLabel: "IMAGINAIRE",
   windowCount: 6,
+};
+
+export const DEMO_SEASONAL: SeasonalRecap = {
+  quarter: "2026-Q2",
+  season: "printemps",
+  label: "Printemps 2026",
+  count: 17,
+  avgRating: 7.8,
+  topMacro: [
+    { macro: "Sci-Fi",   percentage: 32 },
+    { macro: "Fantasy",  percentage: 24 },
+    { macro: "Drame",    percentage: 20 },
+    { macro: "Thriller", percentage: 14 },
+    { macro: "Mystère",  percentage: 10 },
+  ],
+  persona: DEMO_PERSONA,
+  topFilm: {
+    title: "Dune: Part Two",
+    poster_path: "/1pdfLvkbY9ohJlCjQH2CZjjYVvJ.jpg",
+    rating: 9,
+  },
+  oldestDiscovery: {
+    title: "Solaris",
+    release_year: 1972,
+    rating: 8,
+  },
 };
 
 export const DEMO_ANNIVERSARY: Anniversary = {

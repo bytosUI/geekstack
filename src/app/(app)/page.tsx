@@ -22,6 +22,11 @@ import {
   getLatestAvailableMonthlyRecap,
 } from "@/lib/recaps";
 import { detectAnniversary, type Anniversary } from "@/lib/anniversaries";
+import {
+  getLatestAvailableSeasonalRecap,
+  seasonAccent,
+  type SeasonalRecap,
+} from "@/lib/seasonal-recaps";
 import { pickCalmPrompt } from "@/lib/calm-state";
 import { buildTraitInput, computeTraits, type Trait } from "@/lib/traits";
 import { AnniversaryCard } from "./anniversary-card";
@@ -75,10 +80,14 @@ export default async function HomeV3({
     isDemo ? Promise.resolve(null) : getLatestAvailableMonthlyRecap(supabase, user.id),
     isDemo ? Promise.resolve(null) : detectAnniversary(supabase, user.id),
   ]);
+  const realSeasonal = isDemo
+    ? null
+    : await getLatestAvailableSeasonalRecap(supabase, user.id);
 
   const demoModule = isDemo ? await import("@/lib/demo-data") : null;
   const shift = isDemo ? demoModule!.DEMO_SHIFT : realShift;
   const recap = isDemo ? demoModule!.DEMO_RECAP : realRecap;
+  const seasonal: SeasonalRecap | null = isDemo ? demoModule!.DEMO_SEASONAL : realSeasonal;
   const anniversary: Anniversary | null = isDemo ? demoModule!.DEMO_ANNIVERSARY : realAnniversary;
   const traits: Trait[] = isDemo
     ? demoModule!.DEMO_TRAITS
@@ -145,8 +154,43 @@ export default async function HomeV3({
       {/* Anniversaire de note */}
       {anniversary && <AnniversaryCard anniversary={anniversary} />}
 
+      {/* Recap saisonnier — événement plus rare et plus chaleureux que le mensuel */}
+      {seasonal && (
+        <Link
+          href={`/recaps/season/${seasonal.quarter}${isDemo ? "?demo=1" : ""}`}
+          className="block group"
+          prefetch={false}
+        >
+          <Card
+            className="transition group-hover:scale-[1.01]"
+            style={{ borderColor: seasonAccent(seasonal.season), borderWidth: 2 }}
+          >
+            <CardContent className="flex items-center gap-4 py-5">
+              <div
+                className="rounded-full p-3 shrink-0"
+                style={{ backgroundColor: `${seasonAccent(seasonal.season)}20` }}
+              >
+                <Sparkles className="size-5" style={{ color: seasonAccent(seasonal.season) }} />
+              </div>
+              <div className="flex-1">
+                <p className="text-xs uppercase tracking-wider font-medium" style={{ color: seasonAccent(seasonal.season) }}>
+                  Carte collector dispo
+                </p>
+                <p className="text-lg font-bold leading-tight capitalize">
+                  Ton {seasonal.label.toLowerCase()} en {seasonal.count} films
+                </p>
+                <p className="text-sm text-muted-foreground">
+                  Tu étais un.e {seasonal.persona.label}
+                </p>
+              </div>
+              <ArrowRight className="size-5 text-muted-foreground group-hover:text-primary transition" />
+            </CardContent>
+          </Card>
+        </Link>
+      )}
+
       {/* État calme — citation contemplative quand rien d'autre n'a "tilté" */}
-      {!shift?.hasShifted && !recap && !anniversary && (
+      {!shift?.hasShifted && !recap && !anniversary && !seasonal && (
         <Card className="border-dashed bg-muted/40">
           <CardContent className="py-5">
             <p className="text-xs uppercase tracking-wider text-muted-foreground font-medium mb-1.5">
